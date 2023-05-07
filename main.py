@@ -7,12 +7,19 @@ GREEN = "#245953"
 BLUE = "#A6D0DD"
 FONT_NAME = "Courier"
 WORK_MIN = 0.1
-SHORT_BREAK_MIN = 0.2
+SHORT_BREAK_MIN = 0.05
 LONG_BREAK_MIN = 20
 reps = 0
+timer = None
 
 # ---------------------------- TIMER RESET ------------------------------- # 
-
+def reset_timer():
+    global reps
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text="00:00")
+    timer_label.config(text="Timer")
+    check_marks.config(text="")
+    reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps
@@ -40,9 +47,15 @@ def count_down(count):
 
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        global timer
+        timer = window.after(1000, count_down, count - 1)
     else:
         start_timer()
+        mark = ""
+        work_sessions = math.floor(reps/2)
+        for i in range(work_sessions):
+            mark += "✔"
+            check_marks.config(text=mark, fg=GREEN)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -61,9 +74,9 @@ timer_text = canvas.create_text(100, 130, text="05:00", fill="white", font=(FONT
 canvas.grid(row=1, column=1)
 start_button = tkinter.Button(text="Start", highlightthickness=0, command=start_timer)
 start_button.grid(row=2, column=0)
-reset_button = tkinter.Button(text="Reset", highlightthickness=0)
+reset_button = tkinter.Button(text="Reset", highlightthickness=0, command=reset_timer)
 reset_button.grid(row=2, column=2)
-check_marks = tkinter.Label(text="✔️", fg=GREEN, bg=BLUE)
+check_marks = tkinter.Label(bg=BLUE)
 check_marks.grid(row=3, column=1)
 
 window.mainloop()

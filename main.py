@@ -11,7 +11,6 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
 timer = None
-
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
     global reps
@@ -20,7 +19,7 @@ def reset_timer():
     timer_label.config(text="Timer")
     check_marks.config(text="")
     reps = 0
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+# ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     global reps
     reps += 1
@@ -36,15 +35,12 @@ def start_timer():
     else:
         timer_label.config(text="Rest!", fg=GREEN)
         count_down(short_break)
-
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
-
 def count_down(count):
     count_min = math.floor(count / 60)
     count_sec = count % 60
     if count_sec < 10:
         count_sec = f"0{count_sec}"
-
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
         global timer
@@ -56,11 +52,7 @@ def count_down(count):
         for i in range(work_sessions):
             mark += "✔"
             check_marks.config(text=mark, fg=GREEN)
-
-
 # ---------------------------- UI SETUP ------------------------------- #
-
-
 window = tkinter.Tk()
 window.title("Pomodoro!")
 window.config(padx=100, pady=50, bg=BLUE)
